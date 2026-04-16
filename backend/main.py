@@ -105,6 +105,29 @@ class RequestObject(BaseModel):
     responseId: str
 
 
+def _extract_text_content(content: Any) -> str:
+    if content is None:
+        return ""
+
+    if isinstance(content, str):
+        return content
+
+    if isinstance(content, list):
+        text_parts = []
+        for item in content:
+            text = _extract_text_content(item)
+            if text:
+                text_parts.append(text)
+        return "".join(text_parts)
+
+    if isinstance(content, dict):
+        if content.get("type") == "text":
+            return str(content.get("text", ""))
+        return ""
+
+    return ""
+
+
 def _safe_float(value: Any):
     try:
         if value is None:
@@ -315,11 +338,13 @@ async def chat(request: RequestObject):
             stream_mode="messages",
             config=config,
         ):
-            yield token.content
+            text = _extract_text_content(getattr(token, "content", None))
+            if text:
+                yield text
 
     return StreamingResponse(
         generate(),
-        media_type="text/event-stream",
+        media_type="text/plain",
         headers={
             "Cache-Control": "no-cache, no-transform",
             "Connected": "keep-alive",
