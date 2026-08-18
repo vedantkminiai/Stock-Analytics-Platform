@@ -6,6 +6,8 @@ The application uses Yahoo Finance for market and company data. Its AI assistant
 
 > StockAI is an educational research project. It does not provide financial advice, and market data may be delayed or incomplete.
 
+![StockAI dashboard showing the market overview, watchlist preview, and portfolio summary](docs/assets/stockai-dashboard.png)
+
 ## Features
 
 ### Market dashboard
@@ -96,6 +98,8 @@ Stock-Analytics-Platform/
 │   ├── main.py          # FastAPI endpoints, market-data logic, and AI agent
 │   ├── pyproject.toml   # Python project and dependencies
 │   └── uv.lock          # Locked Python dependencies
+├── docs/
+│   └── assets/          # README screenshots and documentation assets
 ├── frontend/
 │   ├── src/
 │   │   ├── App.tsx      # Application views and client-side behavior
